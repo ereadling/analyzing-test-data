@@ -26,8 +26,6 @@ def read_paths(test_paths):
         
 #Makes list of answers for a specific question
 def analyze_answers(dataframes,question):
-    #question=5
-    #question=int(QEntry.get())
     ans_list = []
     for df in dataframes:
         print(df)
@@ -37,15 +35,10 @@ def analyze_answers(dataframes,question):
 #Returns dataframe with answers, counts, and percentages displayed
 def order_answers(ans_list):
     answer_counts = Counter(ans_list)
-    #print("answer counts",answer_counts)
     sorted_answers = sorted(answer_counts.items(), key=lambda x: x[1], reverse=True)
-    #print("sorted_answers", sorted_answers)
     j=len(sorted_answers)
-    #print(j)
     dfx = pd.DataFrame(sorted_answers, columns=['Answer', 'Count'])
     dfx['Percentage'] = dfx['Count'] / dfx['Count'].sum()
-    #inserttable(dfx)
-    #print(dfx)
     print(dfx)
 
 #create function to deal with division if denominator is zero (automatically set to 0)
@@ -79,10 +72,8 @@ def answers_table(pre_test_paths,post_test_paths,question_num):
 ###################################################
 def transition_plots(pre_test_paths,post_test_paths,question_num):
 
-    #combine csvs
     df_merged=combine(pre_test_paths,post_test_paths)
 
-    #create figure with subplots
     fig,ax=plt.subplots(1, 1, figsize=(6, 4), tight_layout=True)
                 
     #Make plot for each question
@@ -104,20 +95,15 @@ def transition_plots(pre_test_paths,post_test_paths,question_num):
 ################################################
 def parameter_values(pre_test_paths,post_test_paths,answer_df,num_questions):
 
-    #Combine csvs
     df_merged=combine(pre_test_paths,post_test_paths)
 
-    #create parameter dataframe
     df_param_Qs = pd.DataFrame(columns=['Q', 'P', 'C', 'S', 'K', 'M'])
                             
-    ## CREATING DATAFRAME FOR QUESTION PARAMETER VALUES
-    # Initialize parameter_counts outside the loop
     parameter_counts = {'WDW': 0, 'WSW': 0, 'WR': 0, 'RW':0, 'RR':0}
 
     # Loop through questions
     h = 0
     while h < num_questions:
-        # Get the answer for the current question
         answer = answer_df.iloc[0, h]
 
     # Loop through students
