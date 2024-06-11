@@ -57,7 +57,7 @@ The last things to input in this section is the answer key file path, as a strin
 ### Answers Table
 The answers table, displayed as a program output, is designed  to give the user an idea of the most popular answer choices on the pre and post tests. Answers are listed in order of decreasing popularity and includes the number and percentage of students who gave the answer. Answers are only displayed for one question, which the user changes at the top of the script.
 
-<img width="544" alt="Screenshot 2024-06-11 at 2 22 02 PM" src="https://github.com/ereadling/analyzing-test-data/assets/159862778/78654acc-6b28-4b8e-bb46-7945bcb9f99d">
+<img width="300" alt="Screenshot 2024-06-11 at 2 22 02 PM" src="https://github.com/ereadling/analyzing-test-data/assets/159862778/78654acc-6b28-4b8e-bb46-7945bcb9f99d">
 
 ### Transition Plots
 The transition plot, displayed in a pop up window, is designed to give the user an idea of the most common answer transitions. More frequent answer transitions appear as darker lines. Answers are only displayed for one question, which the user changes at the top of the script.
