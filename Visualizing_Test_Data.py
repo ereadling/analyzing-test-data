@@ -7,11 +7,11 @@ import seaborn as sns
 ############################
 ### INPUT FILE PATHS HERE###
 ############################
-pre_test_paths = ['/Users/username/Documents/GeneralPhysics_pretest_2015.csv','/Users/username/Documents/IntroPhysics_pretest_2016.csv']
-post_test_paths = ['/Users/username/Documents/GeneralPhysics_posttest_2015.csv','/Users/username/Documents/IntroPhysics_posttest_2016.csv']
+pre_test_paths = ['/Users/erinreadling/Desktop/PhysEdResearch/FMCE_pretest_113_16.csv','/Users/erinreadling/Desktop/PhysEdResearch/FMCE_pretest_111_15.csv']
+post_test_paths = ['/Users/erinreadling/Desktop/PhysEdResearch/FMCE_posttest_113_16 2.csv','/Users/erinreadling/Desktop/PhysEdResearch/FMCE_posttest_111_15.csv']
 class_set=['General Physics','Intro Physics']
-year_set=['2015','2016']
-answer_key_path='/Users/username/Documents/Physics_test_key.csv'
+year_set=['2016','2015']
+answer_key_path='/Users/erinreadling/Desktop/PhysEdResearch/FMCE-Key - Sheet1.csv'
 question_num=5
 num_questions=47
         
@@ -28,7 +28,7 @@ def read_paths(test_paths):
 def analyze_answers(dataframes,question):
     ans_list = []
     for df in dataframes:
-        print(df)
+        #print(df)
         ans_list.extend(df.iloc[:, int(question)])
     return ans_list
        
@@ -60,6 +60,7 @@ def combine(pre_test_paths,post_test_paths):
 ########## TABLES OF ANSWERS #############
 ###################################################
 def answers_table(pre_test_paths,post_test_paths,question_num):
+    print('')
     print(f'Pre test answers question {question_num}')
     order_answers(analyze_answers(read_paths(pre_test_paths),question_num))
     print('')
@@ -91,9 +92,9 @@ def transition_plots(pre_test_paths,post_test_paths,question_num):
         plt.tick_params(labelright=True)
 
 ##################################################
-######### PARAMETER VALUE TABLES #################
+######### METRIC VALUE TABLES #################
 ################################################
-def parameter_values(pre_test_paths,post_test_paths,answer_df,num_questions):
+def metric_values(pre_test_paths,post_test_paths,answer_df,num_questions):
 
     df_merged=combine(pre_test_paths,post_test_paths)
 
@@ -135,12 +136,14 @@ def parameter_values(pre_test_paths,post_test_paths,answer_df,num_questions):
         parameter_counts = {'WDW': 0, 'WSW': 0, 'WR': 0, 'RW':0, 'RR':0}
 
         h += 1
+    df_param_Qs.index += 1
     return df_param_Qs
+    
 
 ##################################
-####### PARAMETER GRAPHS #########
+####### METRIC GRAPHS #########
 ##################################
-def parameter_display(pre_test_paths,post_test_paths,answer_key,num_questions,df_param_Qs):
+def metric_display(pre_test_paths,post_test_paths,answer_key,num_questions,df_param_Qs):
     
     #Generating Plot
     fig,ax=plt.subplots(2, 3, tight_layout=True)
@@ -166,6 +169,7 @@ def parameter_display(pre_test_paths,post_test_paths,answer_key,num_questions,df
     create_axis(1,2,'M')
 
     fig.suptitle(f"{str(class_set)} {str(year_set)}")
+    print(df_param_Qs)
 
 ######################
 ###DENSITY PLOTS######
@@ -175,21 +179,20 @@ def density_plot(pre_test_paths,post_test_paths,answer_key,num_questions):
     df_graphing=pd.DataFrame(columns=['Q', 'P', 'C', 'S', 'K', 'M','Class','Year']) 
 
     for x in range(0,len(pre_test_paths)):
-        df_param_Qs=parameter_values([pre_test_paths[x]], [post_test_paths[x]], answer_df, num_questions)
+        df_param_Qs=metric_values([pre_test_paths[x]], [post_test_paths[x]], answer_df, num_questions)
         df_param_Qs['Class']=[class_set[x]]*df_param_Qs.shape[0]
         df_param_Qs['Year']=[year_set[x]]*df_param_Qs.shape[0]
         df_graphing=df_graphing.append(df_param_Qs,ignore_index=True)
-    print(df_graphing)
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 7), sharey=True)
     fig.suptitle('Density Plots')
 
-    sns.kdeplot(ax=axes[0,0],data=df_graphing, x="Q", hue='Class')
-    sns.kdeplot(ax=axes[0,1],data=df_graphing, x="P", hue='Class')
-    sns.kdeplot(ax=axes[0,2],data=df_graphing, x="C", hue='Class')
-    sns.kdeplot(ax=axes[1,0],data=df_graphing, x="S", hue='Class')
-    sns.kdeplot(ax=axes[1,1],data=df_graphing, x="K", hue='Class')
-    sns.kdeplot(ax=axes[1,2],data=df_graphing, x="M", hue='Class')
+    sns.histplot(ax=axes[0,0],data=df_graphing, x="Q", hue='Class',bins=15, stat="proportion",kde=True)
+    sns.histplot(ax=axes[0,1],data=df_graphing, x="P", hue='Class',bins=15, stat="proportion",kde=True)
+    sns.histplot(ax=axes[0,2],data=df_graphing, x="C", hue='Class',bins=15, stat="proportion",kde=True)
+    sns.histplot(ax=axes[1,0],data=df_graphing, x="S", hue='Class',bins=15, stat="proportion",kde=True)
+    sns.histplot(ax=axes[1,1],data=df_graphing, x="K", hue='Class',bins=15, stat="proportion",kde=True)
+    sns.histplot(ax=axes[1,2],data=df_graphing, x="M", hue='Class',bins=15, stat="proportion",kde=True)
 
 
 #################################
@@ -201,8 +204,8 @@ answers_table(pre_test_paths,post_test_paths,question_num)
 transition_plots(pre_test_paths,post_test_paths,question_num)
 
 #general outputs
-parameter_values(pre_test_paths,post_test_paths,answer_df,num_questions)
-parameter_display(pre_test_paths,post_test_paths,answer_df,num_questions,parameter_values(pre_test_paths, post_test_paths, answer_df, num_questions))
+metric_values(pre_test_paths,post_test_paths,answer_df,num_questions)
+metric_display(pre_test_paths,post_test_paths,answer_df,num_questions,metric_values(pre_test_paths, post_test_paths, answer_df, num_questions))
 density_plot(pre_test_paths,post_test_paths,answer_key_path,num_questions)
 
 plt.show()
